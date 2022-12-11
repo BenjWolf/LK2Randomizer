@@ -1,6 +1,6 @@
 # LK2Randomizer v0.1
 Randomizer for Lost Kingdoms II (gamecube game)
-
+### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v.01/LK2Randomizer_v0.1DOWNLOAD.rar)
 ## What is randomized?
 * Cards from chests, quests, and npcs
 
