@@ -68,7 +68,6 @@ class MainScreen:
         if not randomizer.doRandomization(formDataDict):
             pass #throw exception
         Utility.saveFilePath(formDataDict["selectISOText"])
-        print("done")
         
 
 class Utility:

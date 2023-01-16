@@ -4,37 +4,74 @@ from output import Output
 
 class Randomizer:
     def __init__(self):
-        self.connector = DBConnection()
-        self.pairs = list()
+        pass
 
     def doRandomization(self, formDataDict):
-        self.locationRandomization()
+        db = DBConnection()
+        
+        #set seed
+        ourSeed = formDataDict["seedEntryText"]
+        random.seed(ourSeed)
+        
+        cardList = db.getAllNonKeyCards()
+        startingDeckPairs = self.startingDeckRandomization(db, cardList)
+        cardLocationPairs = self.cardLocationRandomization(db, cardList)
+        shopCardList = db.getShopCards()
+        shopPairs = self.shopRandomization(db, shopCardList)
+        bonusDrawPairs = self.bonusDrawRandomization(db, cardList)
 
-        isoPath = formDataDict["selectISOText"]
-        seed = formDataDict["seedEntryText"]
-        genIsoBool = formDataDict["genIsoSelected"]
-
+        #prepare output
         out = Output()
-        if not out.doOutput(isoPath, seed, genIsoBool, self.pairs):
+        isoPath = formDataDict["selectISOText"]
+        genIsoBool = formDataDict["genIsoSelected"]
+        if not out.doOutput(isoPath, ourSeed, genIsoBool, startingDeckPairs, cardLocationPairs, shopPairs, bonusDrawPairs):
             pass #throw exception
         return True
 
-    def locationRandomization(self): #do not randomize key cards locations
-        self.locationList = self.connector.getAllLocations()
-        self.cardList = self.connector.getAllCards()
-        for loc in self.locationList:
-            if self.connector.checkKeyCardByNumber(loc.originalCardNum): #do not randomize
-                card = self.connector.getCardByNumber(loc.originalCardNum)
+    def startingDeckRandomization(self, db, cardList):
+        startingDeckList = db.getStartingDeck()
+        startingDeckPairs = list()
+        for slot in startingDeckList:
+            card = random.choice(cardList)
+            pair = Pairing(slot, card)
+            startingDeckPairs.append(pair)
+        return startingDeckPairs
+
+    def cardLocationRandomization(self, db, cardList): #do not randomize key cards locations
+        cardLocationList = db.getAllLocations()
+        cardLocationPairs = list()
+        for loc in cardLocationList:
+            if db.checkKeyCardByNumber(loc.cardNumber): 
+                #cardLocation has key card - do not randomize
+                card = db.getCardByNumber(loc.cardNumber)
                 pair = Pairing(loc, card)
             else:
-                card = random.choice(self.cardList)
+                card = random.choice(cardList)
                 pair = Pairing(loc, card)
+            cardLocationPairs.append(pair)
+        return cardLocationPairs
 
-            self.pairs.append(pair)
+    def shopRandomization(self, db, cardList):
+        slotList = db.getShopCardSlots()
+        shopPairs = list()
+        for slot in slotList:
+            card = random.choice(cardList)
+            pair = Pairing(slot, card)
+            shopPairs.append(pair)
+        return shopPairs
+
+    def bonusDrawRandomization(self, db, cardList):
+        bonusList = db.getBonusDrawCards()
+        bonusPairs = list()
+        for slot in bonusList:
+            card = random.choice(cardList)
+            pair = Pairing(slot, card)
+            bonusPairs.append(pair)
+        return bonusPairs
 
 class Pairing:
     '''
-    location can be chest, quest, npc
+    location can be StartingDeckCard, CardLocation, ShopCard, BonusDrawCard
     item can be Card
     '''
     def __init__(self, location, item):
