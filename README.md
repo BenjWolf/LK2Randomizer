@@ -1,5 +1,5 @@
 # LK2Randomizer v0.2
-Randomizer for Lost Kingdoms II (gamecube game)
+Randomizer for Lost Kingdoms II (USA)
 ### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.2/LK2Randomizer_v0.2DOWNLOAD.rar)
 ## What is randomized?
 * Starting Deck
