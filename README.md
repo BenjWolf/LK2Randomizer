@@ -1,4 +1,4 @@
-# LK2Randomizer v0.2
+# LK2Randomizer v0.3
 Randomizer for Lost Kingdoms II (USA)
 ### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.2/LK2Randomizer_v0.2DOWNLOAD.rar)
 ## What is randomized?
@@ -18,7 +18,7 @@ Randomizer for Lost Kingdoms II (USA)
 * Mandragora, Stone Golem, Hell Hound, Birdman, God of Destruction
 
 ## Current Issues
-* Incorrect card texture appears (does not impact gameplay): card throw challenge, trash cards, fairy rewards
+* Incorrect card texture appears (does not impact gameplay): card throw challenge, trash cards, fairy rewards, etc.
 
 ## Future plans?
 * Balanced randomization
