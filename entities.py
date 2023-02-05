@@ -74,6 +74,10 @@ class MainScreenTkVars:
         self.selectISOText = tk.StringVar()
         self.seedEntryText = tk.StringVar()
         self.genIsoSelected = tk.BooleanVar()
+        self.useAllCards = tk.BooleanVar()
 
-
-
+class CardCheckbuttonPair:
+    def __init__(self, card):
+        self.card = card
+        self.cardSelected = tk.BooleanVar()
+        self.cardSelected.set(True)

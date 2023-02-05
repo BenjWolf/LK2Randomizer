@@ -7,15 +7,19 @@ class Output:
         pass
     
     def doOutput(self, isoPath, seed, genIsoBool, startingDeckPairs, locationPairs, shopPairs, bonusDrawPairs):
-        if genIsoBool:
-            newISO = self.copyISO(isoPath, seed)
-            self.writeToISO(newISO, startingDeckPairs)
-            self.writeToISO(newISO, locationPairs)
-            self.writeToISO(newISO, shopPairs)
-            self.writeToISO(newISO, shopPairs)
-            self.writeToISO(newISO, bonusDrawPairs)
-        self.writeToLog(seed, startingDeckPairs, locationPairs, shopPairs, bonusDrawPairs)
-        return True
+        success = True
+        try:
+            if genIsoBool:
+                newISO = self.copyISO(isoPath, seed)
+                self.writeToISO(newISO, startingDeckPairs)
+                self.writeToISO(newISO, locationPairs)
+                self.writeToISO(newISO, shopPairs)
+                self.writeToISO(newISO, shopPairs)
+                self.writeToISO(newISO, bonusDrawPairs)
+            self.writeToLog(seed, startingDeckPairs, locationPairs, shopPairs, bonusDrawPairs)
+        except IOError: #todo figure out how to raise
+            success = False
+        return success
 
     def copyISO(self, isoPath, seed):
         # make copy of .iso with filename @newISO

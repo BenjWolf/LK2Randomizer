@@ -6,8 +6,9 @@ class DBConnection:
     def __init__(self):
         connection = sqlite3.connect(Constants.dbPath)
         self.cursor = connection.cursor()
-
-    #region card queries
+    
+    #card queries
+    #region 
     """
     0 number
     1 name
@@ -51,7 +52,8 @@ class DBConnection:
         return cardList
     #endregion
     
-    #region starting deck
+    #starting deck
+    #region 
     """
     0 id
     1 isoAddress
@@ -66,7 +68,8 @@ class DBConnection:
         return startingDeckList
     #endregion
 
-    #region location queries
+    #location queries
+    #region 
     """
     0 id
     1 name
@@ -83,7 +86,8 @@ class DBConnection:
         return locationList
     #endregion
 
-    #region shop
+    #shop
+    #region 
     """
     0 id
     1 isoAddress
@@ -99,7 +103,8 @@ class DBConnection:
         return shopCardsList
     #endregion
 
-    #region bonus draw
+    #bonus draw
+    #region 
     """
     0 id
     1 isoAddress
@@ -115,7 +120,3 @@ class DBConnection:
         return bonusCardsList
     #endregion
 
-
-
-#testing
-#db = DBConnection()

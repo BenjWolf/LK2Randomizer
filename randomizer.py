@@ -5,15 +5,21 @@ from output import Output
 class Randomizer:
     def __init__(self):
         pass
-
-    def doRandomization(self, formDataDict):
+    def doRandomization(self, formDataDict, cardSelectionList):
         db = DBConnection()
+        success = True
         
         #set seed
         ourSeed = formDataDict["seedEntryText"]
         random.seed(ourSeed)
         
-        cardList = db.getAllNonKeyCards()
+        if cardSelectionList: #has data
+            cardList = list()
+            for selection in cardSelectionList:
+                if selection.cardSelected is True:
+                    cardList.append(selection.card)
+        else:
+            cardList = db.getAllCards()
         startingDeckPairs = self.startingDeckRandomization(db, cardList)
         cardLocationPairs = self.cardLocationRandomization(db, cardList)
         shopCardList = db.getShopCards()
@@ -25,8 +31,8 @@ class Randomizer:
         isoPath = formDataDict["selectISOText"]
         genIsoBool = formDataDict["genIsoSelected"]
         if not out.doOutput(isoPath, ourSeed, genIsoBool, startingDeckPairs, cardLocationPairs, shopPairs, bonusDrawPairs):
-            pass #throw exception
-        return True
+            success = False
+        return success
 
     def startingDeckRandomization(self, db, cardList):
         startingDeckList = db.getStartingDeck()
