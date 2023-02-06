@@ -6,14 +6,24 @@ class Card:
     name (str)
     hexCode (byte)
     rarity (int): 1 through 8
+    isKeyCard (bool) 0 or 1
+    isShopCard (bool) 0 or 1
     """
-    def __init__(self, number, name, hexCode, rarity):
+    def __init__(self, number, name, hexCode, rarity, isKeyCard, isShopCard):
         self.number = number
         self.name = name
         hexCode = str(hexCode) #make sure it's string
         hexCode = int(hexCode, 16) #convert to int, base 16
         self.hexCode = hexCode.to_bytes(1, byteorder='big') #translate to byte
         self.rarity = rarity
+        if isKeyCard == 0:
+            self.isKeyCard = False
+        else:
+            self.isKeyCard = True
+        if isShopCard == 0:
+            self.isShopCard = False
+        else:
+            self.isShopCard = True
 
 class StartingDeckSlot:
     """
@@ -77,7 +87,7 @@ class MainScreenTkVars:
         self.useAllCards = tk.BooleanVar()
 
 class CardCheckbuttonPair:
-    def __init__(self, card):
+    def __init__(self, card, isSelected):
         self.card = card
         self.cardSelected = tk.BooleanVar()
-        self.cardSelected.set(True)
+        self.cardSelected.set(isSelected)

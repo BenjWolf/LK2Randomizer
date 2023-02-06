@@ -12,10 +12,10 @@ class MainScreen:
 
     def __init__(self):
         rootWindow = self.makeRootWindow()
-        self.tkVars = MainScreenTkVars() #list of MainScreenTkVars
+        self.tkVars = MainScreenTkVars()
         self.setInitialSeed()
-        self.cardChkVars = self.setUpCardCheckbuttons() #list of CardCheckbuttonPair
-        self.makeFrames(rootWindow, self.cardChkVars)
+        cardChkVars = self.setUpCardCheckbuttons() #list of CardCheckbuttonPair
+        self.makeFrames(rootWindow, cardChkVars)
         rootWindow.mainloop()
 
     def makeRootWindow(self):
@@ -33,7 +33,7 @@ class MainScreen:
         cardList = db.getAllCards()
         cardChkVars = list()
         for card in cardList:
-            cardChkVars.append(CardCheckbuttonPair(card))
+            cardChkVars.append(CardCheckbuttonPair(card, True))
         return cardChkVars    
 
     def makeFrames(self, rootWindow, cardChkVars):
@@ -77,13 +77,16 @@ class MainScreen:
         generateIsoChk.select()
         generateIsoChk.pack()
 
-        self.submitButton = tk.Button(goFrame, text='Start Randomization', bg='#4caf50', activebackground='#ffeb3b', command=lambda: self.startRandomization_OnClick())
+        self.submitButton = tk.Button(goFrame, text='Start Randomization', bg='#4caf50', activebackground='#ffeb3b', command=lambda: self.startRandomization_OnClick(cardChkVars))
         self.submitButton.pack()
 
     def convertCardData(self, cardChkVars):
+        cardChkValues = list()
         for cardChk in cardChkVars:
-            cardChk.cardSelected = cardChk.cardSelected.get()
-        return cardChkVars
+            newPair = CardCheckbuttonPair(cardChk.card, cardChk.cardSelected.get())
+            newPair.cardSelected = newPair.cardSelected.get()
+            cardChkValues.append(newPair)
+        return cardChkValues
     
     def convertTkVarsToData(self, tkVars):
         '''
@@ -94,6 +97,13 @@ class MainScreen:
         for key, value in dataDict.items():
             dataDict[key] = value.get()
         return dataDict
+
+    def countCardsSelected(self, cardChkVars):
+        cardCount = 0
+        for cardChk in cardChkVars:
+            if cardChk.cardSelected.get():
+                cardCount = cardCount + 1
+        return cardCount
 
     #ShowMessage
     #region 
@@ -112,6 +122,9 @@ class MainScreen:
     def showRandomizeErrorMessage(self):
         messagebox.showerror('Application Error', 'Something went wrong with randomization.')
         messagebox.showerror()
+
+    def showNoCardsSelectedMessage(self):
+        messagebox.showerror('Selection Error', 'You need to select at least one card, dummy.')
     #endregion
 
     #events
@@ -121,7 +134,7 @@ class MainScreen:
         filename = fdialog.askopenfilename(initialdir='/', title='Select file', filetypes=(('ISO files', '*.iso'), ('all files', '*.*')))
         self.tkVars.selectISOText.set(filename)
 
-    def startRandomization_OnClick(self):
+    def startRandomization_OnClick(self, cardChkVars):
         try:
             # test for good .iso Path
             if not Utility.checkForGoodISO(self.tkVars.selectISOText.get()): 
@@ -129,23 +142,26 @@ class MainScreen:
             seedString = self.tkVars.seedEntryText.get()
             if not seedString.isalnum():  # is seed alpha-numeric?
                 raise ValueError
+            if self.tkVars.useAllCards.get() is False: #using selected cards
+                if self.countCardsSelected(cardChkVars) == 0: #no cards selected
+                    raise Exception
         except IOError:
             self.showISOErrorMessage()
         except ValueError:
             self.showSeedAlphaErrorMessage()
+        except Exception:
+            self.showNoCardsSelectedMessage()
         else:  #good .iso
             randomizer = Randomizer()
             formDataDict = self.convertTkVarsToData(self.tkVars)
             #check if we're using all cards
             if self.tkVars.useAllCards.get() is False:
-                cardSelectionList = self.convertCardData(self.cardChkVars)
+                cardSelectionList = self.convertCardData(cardChkVars)
             else:
                 cardSelectionList = False
             try:
                 if not randomizer.doRandomization(formDataDict, cardSelectionList):
                     raise IOError
-            except ValueError:
-                self.showSeedAlphaErrorMessage()
             except IOError:
                 self.showRandomizeErrorMessage()
             else: #success

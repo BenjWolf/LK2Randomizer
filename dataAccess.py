@@ -14,42 +14,30 @@ class DBConnection:
     1 name
     2 hexCode
     3 rarity
+    4 isKeyCard
+    5 isShopCard
     """
     def getCardByNumber(self, number):
-        result = self.cursor.execute(f"SELECT number, name, hexCode, rarity FROM cards WHERE number = {number}")
+        result = self.cursor.execute(f"SELECT number, name, hexCode, rarity, isKeyCard, isShopCard FROM cards WHERE number = {number}")
         row = result.fetchone()
-        card = entities.Card(row[0], row[1], row[2], row[3])
+        card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5])
         return card
-    
-    def checkKeyCardByNumber(self, number):
-        result = self.cursor.execute(f"SELECT isKeyCard FROM cards WHERE number = {number}")
-        row = result.fetchone()
-        isKeyCard = row[0]
-        return isKeyCard
 
     def getAllCards(self):
         cardList = list()
 
-        for row in self.cursor.execute("SELECT number, name, hexCode, rarity FROM cards"):
-            card = entities.Card(row[0], row[1], row[2], row[3])
+        for row in self.cursor.execute("SELECT number, name, hexCode, rarity, isKeyCard, isShopCard FROM cards"):
+            card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5])
             cardList.append(card)
         return cardList
 
-    def getAllNonKeyCards(self):
-        cardList = list()
+    #def getAllNonKeyCards(self):
+    #    cardList = list()
 
-        for row in self.cursor.execute("SELECT number, name, hexCode, rarity FROM cards WHERE isKeyCard = 0"):
-            card = entities.Card(row[0], row[1], row[2], row[3])
-            cardList.append(card)
-        return cardList
-
-    def getShopCards(self):
-        cardList = list()
-
-        for row in self.cursor.execute("SELECT number, name, hexCode, rarity FROM cards WHERE isShopCard = 1"):
-            card = entities.Card(row[0], row[1], row[2], row[3])
-            cardList.append(card)
-        return cardList
+    #    for row in self.cursor.execute("SELECT number, name, hexCode, rarity, isKeyCard, isShopCard FROM cards WHERE isKeyCard = 0"):
+    #        card = entities.Card(row[0], row[1], row[2], row[3])
+    #        cardList.append(card)
+    #    return cardList
     #endregion
     
     #starting deck

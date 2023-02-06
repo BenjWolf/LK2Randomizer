@@ -20,10 +20,17 @@ class Randomizer:
                     cardList.append(selection.card)
         else:
             cardList = db.getAllCards()
+
+        #starting deck
         startingDeckPairs = self.startingDeckRandomization(db, cardList)
+
+        #location
         cardLocationPairs = self.cardLocationRandomization(db, cardList)
-        shopCardList = db.getShopCards()
-        shopPairs = self.shopRandomization(db, shopCardList)
+
+        #shop
+        shopPairs = self.shopRandomization(db, cardList)
+
+        #bonus draw
         bonusDrawPairs = self.bonusDrawRandomization(db, cardList)
 
         #prepare output
@@ -47,10 +54,10 @@ class Randomizer:
         cardLocationList = db.getAllLocations()
         cardLocationPairs = list()
         for loc in cardLocationList:
-            if db.checkKeyCardByNumber(loc.cardNumber): 
+            vanillaCard = db.getCardByNumber(loc.cardNumber)
+            if vanillaCard.isKeyCard: 
                 #cardLocation has key card - do not randomize
-                card = db.getCardByNumber(loc.cardNumber)
-                pair = Pairing(loc, card)
+                pair = Pairing(loc, vanillaCard)
             else:
                 card = random.choice(cardList)
                 pair = Pairing(loc, card)
@@ -58,10 +65,20 @@ class Randomizer:
         return cardLocationPairs
 
     def shopRandomization(self, db, cardList):
+        #filter shop cards into new list
+        shopCardList = list()
+        for selectedCard in cardList:
+            if selectedCard.isShopCard:
+                shopCardList.append(selectedCard)
+        #edge case
+        if len(shopCardList) is 0: #no shop cards available
+            shopCardList.append(db.getCardByNumber(1)) #put in skeleton
+
+        #pick random cards for slots
         slotList = db.getShopCardSlots()
         shopPairs = list()
         for slot in slotList:
-            card = random.choice(cardList)
+            card = random.choice(shopCardList)
             pair = Pairing(slot, card)
             shopPairs.append(pair)
         return shopPairs
