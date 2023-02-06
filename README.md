@@ -1,6 +1,6 @@
-# LK2Randomizer v0.2
+# LK2Randomizer v0.3
 Randomizer for Lost Kingdoms II (USA)
-### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.2/LK2Randomizer_v0.2DOWNLOAD.rar)
+### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.3/LK2Randomizer_v0.3DOWNLOAD.rar)
 ## What is randomized?
 * Starting Deck
 * Cards from chests, quests, and npcs
@@ -12,6 +12,7 @@ Randomizer for Lost Kingdoms II (USA)
 * Places you get key cards
 * Card combiner
 * Capture cards
+* Proving Grounds - bonus cards
 
 ## What are key cards?
 * Cards needed to beat the game
