@@ -1,7 +1,7 @@
 import GUI
 
 class Constants:
-    versionName = 'LK2 Randomizer v0.3'
+    versionName = 'LK2 Randomizer v0.3.1'
     savedPathFile = 'data/savedPath.txt'
     dbPath = 'data/LK2DB.db'
     isoSize = 1459978240

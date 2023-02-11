@@ -8,8 +8,10 @@ class Card:
     rarity (int): 1 through 8
     isKeyCard (bool) 0 or 1
     isShopCard (bool) 0 or 1
+    element (string) Fire, Water, Earth, Wood, Neutral, Mech
+    type_ (string) Independent, Helper, Weapon, Summons, Transform
     """
-    def __init__(self, number, name, hexCode, rarity, isKeyCard, isShopCard):
+    def __init__(self, number, name, hexCode, rarity, isKeyCard, isShopCard, element, type_):
         self.number = number
         self.name = name
         hexCode = str(hexCode) #make sure it's string
@@ -24,6 +26,9 @@ class Card:
             self.isShopCard = False
         else:
             self.isShopCard = True
+        self.element = element
+        self.type_ = type_
+
 
 class StartingDeckSlot:
     """
@@ -86,8 +91,16 @@ class MainScreenTkVars:
         self.genIsoSelected = tk.BooleanVar()
         self.useAllCards = tk.BooleanVar()
 
-class CardCheckbuttonPair:
+class CardCheckbuttonVars:
     def __init__(self, card, isSelected):
         self.card = card
         self.cardSelected = tk.BooleanVar()
         self.cardSelected.set(isSelected)
+
+class CategoryCheckbuttonVars:
+    def __init__(self, field, category):
+        self.field = field
+        self.category = category
+        self.categorySelected = tk.BooleanVar(value=True)
+
+

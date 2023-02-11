@@ -16,18 +16,20 @@ class DBConnection:
     3 rarity
     4 isKeyCard
     5 isShopCard
+    6 element
+    7 type
     """
     def getCardByNumber(self, number):
-        result = self.cursor.execute(f"SELECT number, name, hexCode, rarity, isKeyCard, isShopCard FROM cards WHERE number = {number}")
+        result = self.cursor.execute(f"SELECT number, name, hexCode, rarity, isKeyCard, isShopCard, element, type FROM cards WHERE number = {number}")
         row = result.fetchone()
-        card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5])
+        card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
         return card
 
     def getAllCards(self):
         cardList = list()
 
-        for row in self.cursor.execute("SELECT number, name, hexCode, rarity, isKeyCard, isShopCard FROM cards"):
-            card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5])
+        for row in self.cursor.execute("SELECT number, name, hexCode, rarity, isKeyCard, isShopCard, element, type FROM cards"):
+            card = entities.Card(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
             cardList.append(card)
         return cardList
 
