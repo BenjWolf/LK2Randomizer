@@ -1,6 +1,6 @@
-# LK2Randomizer v0.3
+# LK2Randomizer v0.3.1
 Randomizer for Lost Kingdoms II (USA)
-### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.3/LK2Randomizer_v0.3DOWNLOAD.rar)
+### [Download Here](https://github.com/BenjWolf/LK2Randomizer/releases/download/v0.3.1/LK2Randomizer_v0.3.1DOWNLOAD.rar)
 ## What is randomized?
 * Starting Deck
 * Cards from chests, quests, and npcs
