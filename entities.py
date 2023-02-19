@@ -6,8 +6,8 @@ class Card:
     name (str)
     hexCode (byte)
     rarity (int): 1 through 8
-    isKeyCard (bool) 0 or 1
-    isShopCard (bool) 0 or 1
+    isKeyCard (bool)
+    isShopCard (bool)
     element (string) Fire, Water, Earth, Wood, Neutral, Mech
     type_ (string) Independent, Helper, Weapon, Summons, Transform
     """
@@ -35,11 +35,15 @@ class StartingDeckSlot:
     id (int)
     isoAddress (byte)
     cardNumber (int)
+    cardGroup (int)
+    rarity (int)
     """
-    def __init__(self, id, isoAddress, cardNumber):
+    def __init__(self, id, isoAddress, cardNumber, cardGroup, rarity):
         self.id = id
         self.isoAddress = int(isoAddress,16) #convert to int, base 16
         self.cardNumber = cardNumber
+        self.cardGroup = cardGroup
+        self.rarity = rarity
 
 
 class CardLocation:
@@ -50,13 +54,20 @@ class CardLocation:
     level (string)
     cardNumber (int)
     isoAddress (byte)
+    rarity (int)
+    isKeyCard (bool)
     """
-    def __init__(self, id, name, level, cardNumber, isoAddress):
+    def __init__(self, id, name, level, cardNumber, isoAddress, rarity, isKeyCard):
         self.id = id
         self.name = name
         self.level = level
         self.cardNumber = cardNumber
         self.isoAddress = int(isoAddress,16) #convert to int, base 16
+        self.rarity = rarity
+        if isKeyCard == 0:
+            self.isKeyCard = False
+        else:
+            self.isKeyCard = True
 
 class ShopCardSlot:
     """
@@ -64,12 +75,14 @@ class ShopCardSlot:
     isoAddress (byte)
     cardNumber (int)
     level (string)
+    rarity (int)
     """
-    def __init__(self, id, isoAddress, cardNumber, level):
+    def __init__(self, id, isoAddress, cardNumber, level, rarity):
         self.id = id
         self.isoAddress = int(isoAddress,16) #convert to int, base 16
         self.cardNumber = cardNumber
         self.level = level
+        self.rarity = rarity
 
 class BonusDrawCardSlot:
     """
@@ -77,19 +90,23 @@ class BonusDrawCardSlot:
     isoAddress (byte)
     cardNumber (int)
     level (string)
+    cardGroup (int)
     """
-    def __init__(self, id, isoAddress, cardNumber, level):
+    def __init__(self, id, isoAddress, cardNumber, level, cardGroup, rarity):
         self.id = id
         self.isoAddress = int(isoAddress,16) #convert to int, base 16
         self.cardNumber = cardNumber
         self.level = level
+        self.cardGroup = cardGroup
+        self.rarity = rarity
 
 class MainScreenTkVars:
     def __init__(self):
         self.selectISOText = tk.StringVar()
+        self.balancedRandomization = tk.BooleanVar(value=True)
+        self.useAllCards = tk.BooleanVar(value=True)
         self.seedEntryText = tk.StringVar()
         self.genIsoSelected = tk.BooleanVar()
-        self.useAllCards = tk.BooleanVar()
 
 class CardCheckbuttonVars:
     def __init__(self, card, isSelected):

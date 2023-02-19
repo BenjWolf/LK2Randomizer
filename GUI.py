@@ -70,9 +70,11 @@ class MainScreen:
         cardsFrame = tk.Frame(rootWindow, bd=10)
         cardsFrame.pack()
         
+        balancedBtn = tk.Checkbutton(cardsFrame, text='Balanced randomization?', variable=self.tkVars.balancedRandomization)
+        balancedBtn.pack()
+
         editCardPoolBtn = tk.Button(cardsFrame, text='Edit Card Pool', command=lambda: self.editCardPool_OnClick(rootWindow, cardChkVars, categoryChkVars))
         useAllCardsChk = tk.Checkbutton(cardsFrame, text='Use all cards?', variable=self.tkVars.useAllCards, command=lambda: self.useAllCards_Changed(editCardPoolBtn))
-        useAllCardsChk.select()
 
         useAllCardsChk.pack()
 
